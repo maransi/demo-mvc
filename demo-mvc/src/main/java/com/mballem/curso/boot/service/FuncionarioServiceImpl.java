@@ -1,5 +1,6 @@
 package com.mballem.curso.boot.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,9 +43,22 @@ public class FuncionarioServiceImpl implements IService<Funcionario, Long> {
 		return dao.findById(id);
 	}
 
+	public List<Funcionario> buscarPorCargo( Long id ){
+		return dao.buscarPorCargo(id);
+	}
+	
 	@Override
 	public List<Funcionario> buscarTodos() {
 		return dao.findAll();
 	}
+
+	public List<Funcionario> buscarPorNome(String nome) {
+		return dao.buscarPorNome(nome); 
+	}
+	
+	public List<Funcionario> buscarPorData( LocalDate dataInicial, LocalDate dataFinal ){
+		return dao.buscaPorData(dataInicial, dataFinal);
+	}
+	
 
 }

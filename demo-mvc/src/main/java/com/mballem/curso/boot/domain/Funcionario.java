@@ -3,23 +3,47 @@ package com.mballem.curso.boot.domain;
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
+import javax.persistence.Index;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
+import org.springframework.format.annotation.NumberFormat;
+import org.springframework.format.annotation.NumberFormat.Style;
 
 @SuppressWarnings("serial")
 @Entity
 @Table( name = "funcionarios",
 		indexes = { @Index(name="idxFuncNome", columnList="nome", unique = true)})
+@NamedQueries( {	@NamedQuery(name="funcionario.nome", query = "Select f From Funcionario f Where nome like :nome"),
+					@NamedQuery(name="funcionario.cargo", 
+								query = "Select f From Funcionario f Where f.cargo.id = :cargo"),
+					@NamedQuery(name="funcionario.data",
+								query="Select f From Funcionario f Where f.dataEntrada Between :dataInicial And :dataFinal")
+})
 public class Funcionario extends AbstractEntity<Long> {
 	
 	@Column( nullable = false)
 	private String nome;
 	
+	@NumberFormat( style = Style.CURRENCY, pattern = "#,##0.00")
 	@Column( nullable = false, columnDefinition = "DECIMAL(7,2) DEFAULT 0.00")
 	private BigDecimal salario;
 
+	@DateTimeFormat(iso = ISO.DATE)
 	@Column( nullable = false, columnDefinition = "DATE")
 	private LocalDate dataEntrada;
 	
+	@DateTimeFormat(iso = ISO.DATE)
 	@Column( columnDefinition = "DATE")
 	private LocalDate dataSaida;
 	
@@ -27,6 +51,11 @@ public class Funcionario extends AbstractEntity<Long> {
 	@JoinColumn( name = "cargo_id_fk", 
 					foreignKey = @ForeignKey(name = "fkFunc_Cargo") )	
 	private Cargo cargo;
+	
+
+	@ManyToOne
+	@JoinColumn( name="departamento_id_fk")
+	private Departamento departamento;
 	
 	@OneToOne( cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn( name = "endereco_id_fk",
@@ -95,6 +124,14 @@ public class Funcionario extends AbstractEntity<Long> {
 
 	public void setEndereco(Endereco endereco) {
 		this.endereco = endereco;
+	}
+
+	public Departamento getDepartamento() {
+		return departamento;
+	}
+
+	public void setDepartamento(Departamento departamento) {
+		this.departamento = departamento;
 	}
 
 	@Override

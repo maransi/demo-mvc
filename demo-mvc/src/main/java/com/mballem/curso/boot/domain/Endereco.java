@@ -7,6 +7,7 @@ import javax.persistence.*;
 @Table(name="enderecos")
 public class Endereco extends AbstractEntity<Long> {
 
+
 	@Column(name="bairro", nullable = false, length = 255)
 	private String bairro;
 	
@@ -90,6 +91,14 @@ public class Endereco extends AbstractEntity<Long> {
 
 	public void setNumero(Integer numero) {
 		this.numero = numero;
+	}
+
+	public UF getUf() {
+		return uf;
+	}
+
+	public void setUf(UF uf) {
+		this.uf = uf;
 	}
 
 	@Override
