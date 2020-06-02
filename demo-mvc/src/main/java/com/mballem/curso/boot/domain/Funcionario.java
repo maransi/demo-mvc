@@ -14,11 +14,19 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.PastOrPresent;
+import javax.validation.constraints.Positive;
+import javax.validation.constraints.Size;
 
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.format.annotation.NumberFormat;
 import org.springframework.format.annotation.NumberFormat.Style;
+
+import com.mballem.curso.boot.web.annotation.CpfCnpj;
 
 @SuppressWarnings("serial")
 @Entity
@@ -32,13 +40,26 @@ import org.springframework.format.annotation.NumberFormat.Style;
 })
 public class Funcionario extends AbstractEntity<Long> {
 	
+	@NotBlank
+	@Size(max = 255, min = 3)
 	@Column( nullable = false)
 	private String nome;
 	
-	@NumberFormat( style = Style.CURRENCY, pattern = "#,##0.00")
+	
+	@NotBlank
+	@Size(min=11, max=15)
+	@CpfCnpj
+	@Column( length = 15)
+	private String cpfCnpj;
+	
+	@Positive( message="Salário deve ser maior que zero")
+	@NotNull
+	@NumberFormat(style = Style.CURRENCY, pattern = "#,##0.00")
 	@Column( nullable = false, columnDefinition = "DECIMAL(7,2) DEFAULT 0.00")
 	private BigDecimal salario;
 
+	@NotNull
+	@PastOrPresent(message = "{PastOrPresent.funcionario.dataEntrada}")
 	@DateTimeFormat(iso = ISO.DATE)
 	@Column( nullable = false, columnDefinition = "DATE")
 	private LocalDate dataEntrada;
@@ -47,16 +68,21 @@ public class Funcionario extends AbstractEntity<Long> {
 	@Column( columnDefinition = "DATE")
 	private LocalDate dataSaida;
 	
+	@NotNull(message="{NotNull.funcionario.cargo}")
 	@ManyToOne
 	@JoinColumn( name = "cargo_id_fk", 
 					foreignKey = @ForeignKey(name = "fkFunc_Cargo") )	
 	private Cargo cargo;
 	
 
+	@NotNull
 	@ManyToOne
-	@JoinColumn( name="departamento_id_fk")
+	@JoinColumn( name="departamento_id_fk",
+					foreignKey = @ForeignKey(name="fkFunc_Depto") )
 	private Departamento departamento;
 	
+	
+	@Valid		// Informa que deve ser validado conforme as validações na classe de Endereco
 	@OneToOne( cascade = CascadeType.ALL, orphanRemoval = true)
 	@JoinColumn( name = "endereco_id_fk",
 					foreignKey = @ForeignKey(name = "fkFunc_Endereco") )	
@@ -132,6 +158,14 @@ public class Funcionario extends AbstractEntity<Long> {
 
 	public void setDepartamento(Departamento departamento) {
 		this.departamento = departamento;
+	}
+
+	public String getCpfCnpj() {
+		return cpfCnpj;
+	}
+
+	public void setCpfCnpj(String cpfCnpj) {
+		this.cpfCnpj = cpfCnpj;
 	}
 
 	@Override

@@ -38,7 +38,7 @@ public abstract class AbstractDao< T, K extends Serializable> {
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS, timeout = 30)
     public List<T> findAll(){
-    	Query objects = em.createQuery("select object(o) from " + clazz.getSimpleName() + " as o");
+    	Query objects = em.createQuery("select object(o) from " + clazz.getSimpleName() + " as o order by o.id");
     	
 		return objects.getResultList();
     }

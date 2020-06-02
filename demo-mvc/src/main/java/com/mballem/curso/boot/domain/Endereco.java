@@ -1,6 +1,14 @@
 package com.mballem.curso.boot.domain;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.Table;
+import javax.validation.constraints.Digits;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 @SuppressWarnings("serial")
 @Entity
@@ -8,24 +16,37 @@ import javax.persistence.*;
 public class Endereco extends AbstractEntity<Long> {
 
 
+	@NotBlank
+	@NotNull
 	@Column(name="bairro", nullable = false, length = 255)
 	private String bairro;
 	
+	@NotBlank
+	@NotNull
+	@Size(min=9, max=9, message="{Size.endereco.cep}")
 	@Column(name="cep", nullable = false, length = 9)
 	private String cep;
 	
+	@NotBlank
+	@NotNull
 	@Column(name="cidade", nullable = false, length = 255)
 	private String cidade;
 	
+	
+	@Size(max=255)
 	@Column(name="complemento", nullable = false, length = 255)
 	private String complemento;
 	
+	@NotBlank
 	@Column(name="logradouro", nullable = false, length = 255)
 	private String logradouro;
 	
+	@NotNull(message="{NotNull.endereco.numero}")
+	@Digits(integer=5, fraction=0)
 	@Column(name="numero", nullable = false, length = 255)
 	private Integer numero;
-	
+
+	@NotNull(message="{NotNull.endereco.uf}")
 	@Column(name="uf", nullable = false, length = 2)
 	@Enumerated(EnumType.STRING)	// Informa ao bd que o conteúdo deverá ser salvo como STRING
 	private UF uf;

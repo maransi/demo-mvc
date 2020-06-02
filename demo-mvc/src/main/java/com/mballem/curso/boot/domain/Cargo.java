@@ -2,7 +2,18 @@ package com.mballem.curso.boot.domain;
 
 import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.ForeignKey;
+import javax.persistence.Index;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 
 @SuppressWarnings("serial")
 @Entity
@@ -10,9 +21,12 @@ import javax.persistence.*;
 		indexes = { @Index(name="idxCargoNome", columnList="nome", unique = true)})
 public class Cargo extends AbstractEntity<Long> {
 
+	@NotBlank(message="O nome do cargo é obrigatório.")
+	@Size(min = 3, max=60, message="O tamanho do nome deve ser entre {min} e {max}.")
 	@Column( name = "nome", nullable = false, length=60)
 	private String nome;
 	
+	@NotNull(message="Selecione o departamento relativo ao cargo.")
 	@ManyToOne
 	@JoinColumn(name="id_departamento_fk",
 			foreignKey = @ForeignKey(name = "fkCargo_Depto") )	
