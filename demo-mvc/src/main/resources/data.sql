@@ -19,11 +19,11 @@ VALUES('Auxiliar Contábil',1),
         ('Psicologo',4);
 
 INSERT INTO enderecos( logradouro, numero, bairro, complemento, cep, cidade, uf )
-VALUES( 'Rua das Oliveiras', 200, 'Centro', 'Fundos', '97050-015', 'Porto Alegre', 'RS'),
-        ('Av. dos Palmares', 320, 'Ribeirão', 'Casa C', '98050-908', 'Canoas', 'RS' ),
-        ('Rua Senador Cassiano do Nascimento', 135, 'Noroeste','AP. 106', '90798-099','Porto Alegre','RS'),
-        ('Av. Maracanã', 309,'Maracanã','AP. 108', '91050-980', 'Rio de Janeiro','RJ'),
-        ('Rua Gomes Carneiro', 909,'Centro', 'Esquina', '98080-999', 'Porto Alegre','RS');
+VALUES( 'Rua das Oliveiras', 200, 'Centro', 'Fundos', '97050015', 'Porto Alegre', 'RS'),
+        ('Av. dos Palmares', 320, 'Ribeirão', 'Casa C', '98050908', 'Canoas', 'RS' ),
+        ('Rua Senador Cassiano do Nascimento', 135, 'Noroeste','AP. 106', '90798099','Porto Alegre','RS'),
+        ('Av. Maracanã', 309,'Maracanã','AP. 108', '91050980', 'Rio de Janeiro','RJ'),
+        ('Rua Gomes Carneiro', 909,'Centro', 'Esquina', '98080999', 'Porto Alegre','RS');
 
 INSERT INTO funcionarios(nome, salario, cargo_id_fk, endereco_id_fk, data_entrada, data_saida, departamento_id_fk, cpf_cnpj)
 VALUES('Jorge da Silva', 3500.99, 4, 1, '2014-10-01',null, 2, null),
