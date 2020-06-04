@@ -1,7 +1,8 @@
 package com.mballem.curso.boot;
 
-import static org.junit.Assert.assertEquals;
+//import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.math.BigDecimal;
@@ -26,6 +27,7 @@ import com.mballem.curso.boot.domain.Endereco;
 import com.mballem.curso.boot.domain.Funcionario;
 import com.mballem.curso.boot.domain.UF;
 import com.mballem.curso.boot.service.CargoServiceImpl;
+import com.mballem.curso.boot.service.DepartamentoServiceImpl;
 import com.mballem.curso.boot.service.FuncionarioServiceImpl;
 
 
@@ -41,6 +43,9 @@ class FuncionarioServiceTests {
 	
 	@Autowired
 	CargoServiceImpl serviceCargo;
+
+	@Autowired
+	DepartamentoServiceImpl departamentoService;
 	
 	@Test
 	void contextLoads() {
@@ -91,6 +96,7 @@ class FuncionarioServiceTests {
 			Funcionario funcionario = service.buscarPorId(1L);
 			
 			funcionario.setNome("Jorge da Silva Updated");
+			funcionario.setCpfCnpj("10652360858");
 			
 			service.editar(funcionario);
 			
@@ -118,7 +124,7 @@ class FuncionarioServiceTests {
 		
 		
 		try {
-			Endereco endereco = new Endereco("JD CARLU","02423100","SAO PAULO","CASA C","R CARIOBA", 360, UF.SP);
+			Endereco endereco = new Endereco("JD CARLU","02423-100","SAO PAULO","CASA C","R CARIOBA", 360, UF.SP);
 			
 			Cargo cargo = serviceCargo.buscarPorId(2L);
 			
@@ -131,6 +137,8 @@ class FuncionarioServiceTests {
 			funcionario.setEndereco(endereco);
 			funcionario.setNome("MARCO ANTONIO DA SILVA");
 			funcionario.setSalario(new BigDecimal("11000.00"));
+			funcionario.setCpfCnpj("10652360858");
+			funcionario.setDepartamento( departamentoService.buscarPorId(1L) );
 			
 			service.salvar(funcionario);
 			
@@ -151,7 +159,7 @@ class FuncionarioServiceTests {
 		logger.info("\n Testing is Running delete()");
 		
 		try {
-			Endereco endereco = new Endereco("JD CARLU","02423100","SAO PAULO","CASA C","R CARIOBA", 360, UF.SP);
+			Endereco endereco = new Endereco("JD CARLU","02423-100","SAO PAULO","CASA C","R CARIOBA", 360, UF.SP);
 			
 			Cargo cargo = serviceCargo.buscarPorId(2L);
 			
@@ -164,6 +172,8 @@ class FuncionarioServiceTests {
 			funcionario.setEndereco(endereco);
 			funcionario.setNome("MARCO ANTONIO DA SILVA");
 			funcionario.setSalario(new BigDecimal("11000.00"));
+			funcionario.setCpfCnpj("10652360858");
+			funcionario.setDepartamento(departamentoService.buscarPorId(1L));
 			
 			service.salvar(funcionario);
 			

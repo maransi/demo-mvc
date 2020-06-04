@@ -29,21 +29,21 @@ public class DepartamentoController {
 
 	@GetMapping("/cadastrar")
 	public String cadastrar(Departamento departamento) {
-		return "/departamento/cadastro";
+		return "departamento/cadastro";
 	}
 
 	@GetMapping("/listar")
 	public String listar(ModelMap model) {
 		model.addAttribute("departamentos", service.buscarTodos());
 		
-		return "/departamento/lista";
+		return "departamento/lista";
 	}
 
 	@PostMapping("/salvar")
 	public String salvar(@Valid @ModelAttribute Departamento departamento, BindingResult result, RedirectAttributes attr) {
 
 		if (result.hasErrors()) {
-			return "/departamento/cadastro";
+			return "departamento/cadastro";
 		}
 
 		try {
@@ -66,7 +66,7 @@ public class DepartamentoController {
 			e.printStackTrace();
 		}
 		
-		return "/departamento/cadastro";
+		return "departamento/cadastro";
 	}
 
 	
@@ -74,7 +74,7 @@ public class DepartamentoController {
 	public String editar( @Valid Departamento departamento, BindingResult result, RedirectAttributes attr ) {
 		
 		if (result.hasErrors()) {
-			return "/departamento/cadastro";
+			return "departamento/cadastro";
 		}
 
 		try {

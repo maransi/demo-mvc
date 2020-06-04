@@ -1,7 +1,8 @@
 package com.mballem.curso.boot;
 
-import static org.junit.Assert.assertEquals;
+//import static org.junit.Assert.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.util.List;
@@ -22,6 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.mballem.curso.boot.domain.Cargo;
 import com.mballem.curso.boot.domain.Departamento;
 import com.mballem.curso.boot.service.CargoServiceImpl;
+import com.mballem.curso.boot.service.DepartamentoServiceImpl;
 
 
 @TestMethodOrder(OrderAnnotation.class)		// Annotation para informar que a ordem da execução dos testes será pela annotation @Order
@@ -33,6 +35,9 @@ class CargoServiceTests {
 
 	@Autowired
 	CargoServiceImpl service;
+	
+	@Autowired
+	DepartamentoServiceImpl departamentoService;
 	
 	@Test
 	void contextLoads() {
@@ -110,7 +115,9 @@ class CargoServiceTests {
 		
 		
 		try {
-			Cargo cargo = new Cargo("CARGO Inserted", null);
+			Departamento depto = departamentoService.buscarPorId(1L);
+			
+			Cargo cargo = new Cargo("CARGO Inserted", depto);
 			
 			service.salvar(cargo);
 			
@@ -131,7 +138,9 @@ class CargoServiceTests {
 		logger.info("\n Testing is Running delete()");
 		
 		try {
-			Cargo cargo = new Cargo("CARGO Inserted", null);
+			Departamento depto = departamentoService.buscarPorId(1L);
+			
+			Cargo cargo = new Cargo("CARGO Inserted", depto);
 			
 			service.salvar(cargo);
 			

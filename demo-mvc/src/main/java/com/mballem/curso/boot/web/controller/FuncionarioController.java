@@ -53,14 +53,14 @@ public class FuncionarioController {
 	
 	@GetMapping("/cadastrar")
 	public String cadastrar(Funcionario funcionario) {
-		return "/funcionario/cadastro";
+		return "funcionario/cadastro";
 	}
 	
 	@GetMapping("/listar")
 	public String listar(ModelMap model) {
         model.addAttribute("funcionarios", funcionarioService.buscarTodos());
 		
-		return "/funcionario/lista";
+		return "funcionario/lista";
 	}
 	
 
@@ -68,7 +68,7 @@ public class FuncionarioController {
 	public String salvar(@Valid Funcionario funcionario, BindingResult result, RedirectAttributes attr) {
 		
 		if (result.hasErrors()) {
-			return "/funcionario/cadastro";
+			return "funcionario/cadastro";
 		}
 		
 		try {
@@ -92,7 +92,7 @@ public class FuncionarioController {
 			e.printStackTrace();
 		}
 		
-		return "/funcionario/cadastro";
+		return "funcionario/cadastro";
 	}
 	
 	@GetMapping("/excluir/{id}")
@@ -116,7 +116,7 @@ public class FuncionarioController {
 		
 		model.addAttribute("funcionarios", funcionarioService.buscarPorNome(nome));
 		
-		return "/funcionario/lista";
+		return "funcionario/lista";
 		
 	}
 	
@@ -129,7 +129,7 @@ public class FuncionarioController {
 			model.addAttribute("funcionarios", funcionarioService.buscarTodos());
 		}
 		
-		return "/funcionario/lista";
+		return "funcionario/lista";
 		
 	}
 	
@@ -142,7 +142,7 @@ public class FuncionarioController {
 		
 		model.addAttribute("funcionarios", funcionarioService.buscarPorData(dataInicial, dataFinal));
 		
-		return "/funcionario/lista";
+		return "funcionario/lista";
 	}
 	
 	@PostMapping("/editar")
