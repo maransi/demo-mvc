@@ -1,6 +1,7 @@
 package com.mballem.curso.boot.web.controller;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -13,12 +14,14 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.mballem.curso.boot.domain.Cargo;
 import com.mballem.curso.boot.domain.Departamento;
 import com.mballem.curso.boot.service.CargoServiceImpl;
 import com.mballem.curso.boot.service.DepartamentoServiceImpl;
+import com.mballem.curso.boot.util.PaginacaoUtil;
 
 @Controller
 @RequestMapping("/cargos")
@@ -41,8 +44,17 @@ public class CargoController {
 	}
 	
 	@GetMapping("/listar")
-	public String listar(ModelMap model) {
-		model.addAttribute("cargos", cargoService.buscarTodos());
+	public String listar(ModelMap model, 
+							@RequestParam("page") Optional<Integer> page,
+							@RequestParam("dir") Optional<String> dir) {
+		
+		int paginaAtual = page.orElse(1);
+		String ordem = dir.orElse("asc");
+		
+		PaginacaoUtil<Cargo> pageCargo = cargoService.buscarPorPagina(paginaAtual, ordem);
+		
+		model.addAttribute("pageCargo", pageCargo );
+//		model.addAttribute("cargos", cargoService.buscarTodos());
 		
 		return "cargo/lista";
 	}
@@ -97,22 +109,22 @@ public class CargoController {
 	}
 
 	@GetMapping("/excluir/{id}")
-	public String excluir(@PathVariable("id") Long id, ModelMap model) {
+	public String excluir(@PathVariable("id") Long id, RedirectAttributes attr) {
 		
 		try {
 			if (cargoService.cargoTemFuncionario(id)) {
-				model.addAttribute("fail", "Cargo não removido. Possui departamento(s) vinculado(s).");
+				attr.addFlashAttribute("fail", "Cargo não excluido. Tem funcionário(s) vinculado(s).");
 			} else {
 				cargoService.excluir(id);
-			
-				model.addAttribute("success", "Cargo excluído com sucesso.");
+
+				attr.addFlashAttribute("success", "Cargo excluido com sucesso.");
 			}
 
 		}catch( Exception e ) {
 			e.printStackTrace();
 		}
 		
-		return listar(model);
+		return "redirect:/cargos/listar";
 	}
 	
 	@ModelAttribute("departamentos")

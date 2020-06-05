@@ -95,4 +95,10 @@ public abstract class AbstractDao< T, K extends Serializable> {
 		return query.getResultList();
 	}
 
+	protected List<T> createQuery(String jpql){
+		TypedQuery<T> query = em.createQuery(jpql, clazz );
+		
+		return query.getResultList();
+	}
+
 }
