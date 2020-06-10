@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.mballem.curso.boot.dao.DepartamentoDao;
+import com.mballem.curso.boot.domain.Cargo;
 import com.mballem.curso.boot.domain.Departamento;
+import com.mballem.curso.boot.util.PaginacaoUtil;
 
 @Service
 public class DepartamentoServiceImpl implements IService<Departamento, Long> {
@@ -50,6 +52,11 @@ public class DepartamentoServiceImpl implements IService<Departamento, Long> {
 		}
 		
 		return true;
+	}
+
+	public PaginacaoUtil<Departamento> buscarPorPagina( int pagina, String direcao){
+		
+		return dao.buscaPaginada(pagina, direcao);
 	}
 
 }

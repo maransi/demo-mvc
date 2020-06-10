@@ -1,5 +1,7 @@
 package com.mballem.curso.boot.web.controller;
 
+import java.util.Optional;
+
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,10 +13,12 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.mballem.curso.boot.domain.Departamento;
 import com.mballem.curso.boot.service.DepartamentoServiceImpl;
+import com.mballem.curso.boot.util.PaginacaoUtil;
 
 @Controller
 @RequestMapping("/departamentos")
@@ -32,13 +36,25 @@ public class DepartamentoController {
 		return "departamento/cadastro";
 	}
 
+
 	@GetMapping("/listar")
-	public String listar(ModelMap model) {
-		model.addAttribute("departamentos", service.buscarTodos());
+	public String listar(ModelMap model, 
+							@RequestParam("page") Optional<Integer> page,
+							@RequestParam("dir") Optional<String> dir) {
+		
+		int paginaAtual = page.orElse(1);
+		String ordem = dir.orElse("asc");
+		
+		PaginacaoUtil<Departamento> pageDepartamento = service.buscarPorPagina(paginaAtual, ordem);
+		
+		model.addAttribute("pageDepartamento", pageDepartamento );
+//		model.addAttribute("cargos", cargoService.buscarTodos());
 		
 		return "departamento/lista";
 	}
 
+	
+	
 	@PostMapping("/salvar")
 	public String salvar(@Valid @ModelAttribute Departamento departamento, BindingResult result, RedirectAttributes attr) {
 
@@ -105,7 +121,7 @@ public class DepartamentoController {
 			e.printStackTrace();
 		}
 		
-		return listar(model);
+		return "redirect:/departamentos/listar";
 	}
 	
 }

@@ -2,6 +2,7 @@ package com.mballem.curso.boot.web.controller;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Optional;
 
 import javax.validation.Valid;
 
@@ -27,6 +28,7 @@ import com.mballem.curso.boot.domain.UF;
 import com.mballem.curso.boot.service.CargoServiceImpl;
 import com.mballem.curso.boot.service.DepartamentoServiceImpl;
 import com.mballem.curso.boot.service.FuncionarioServiceImpl;
+import com.mballem.curso.boot.util.PaginacaoUtil;
 import com.mballem.curso.boot.web.validator.FuncionarioValidator;
 
 @Controller
@@ -50,16 +52,24 @@ public class FuncionarioController {
 	public void initBinder( WebDataBinder binder ) {
 		binder.addValidators(new FuncionarioValidator());
 	}
-	
+
 	@GetMapping("/cadastrar")
 	public String cadastrar(Funcionario funcionario) {
 		return "funcionario/cadastro";
 	}
 	
 	@GetMapping("/listar")
-	public String listar(ModelMap model) {
-        model.addAttribute("funcionarios", funcionarioService.buscarTodos());
+	public String listar(ModelMap model, 
+							@RequestParam("page") Optional<Integer> page,
+							@RequestParam("dir") Optional<String> dir) {
 		
+		int paginaAtual = page.orElse(1);
+		String ordem = dir.orElse("asc");
+		
+		PaginacaoUtil<Funcionario> pageFuncionario = funcionarioService.buscarPorPagina(paginaAtual, ordem);
+		
+		model.addAttribute("pageFuncionario", pageFuncionario );
+
 		return "funcionario/lista";
 	}
 	
@@ -72,6 +82,8 @@ public class FuncionarioController {
 		}
 		
 		try {
+			funcionario.setCpfCnpj(funcionario.getCpfCnpj().replaceAll("[^0-9]", ""));
+			
 			funcionarioService.salvar(funcionario);
 			
 			attr.addFlashAttribute("success", "Funcionário incluído com sucesso.");
@@ -96,18 +108,17 @@ public class FuncionarioController {
 	}
 	
 	@GetMapping("/excluir/{id}")
-	public String excluir( @PathVariable("id") Long id, ModelMap model) {
+	public String excluir(@PathVariable("id") Long id, RedirectAttributes attr) {
+		
 		try {
 			funcionarioService.excluir(id);
-			
-			model.addAttribute("success", "Funcionário eliminado com sucesso.");
-		}catch ( Exception e ) {
-			model.addAttribute("fail", "Ocorreu o seguinte erro ( " + e.getMessage() + " )");
-//			e.printStackTrace();
-			
+
+			attr.addFlashAttribute("success", "Funcionario excluido com sucesso.");
+		}catch( Exception e ) {
+			e.printStackTrace();
 		}
 		
-		return listar( model );
+		return "redirect:/funcionarios/listar";
 	}
 
 	
@@ -151,6 +162,8 @@ public class FuncionarioController {
 			return "/funcionario/cadastro";
 		}
 		try {
+			funcionario.setCpfCnpj(funcionario.getCpfCnpj().replaceAll("[^0-9]", ""));
+
 			funcionarioService.editar(funcionario);
 			
 			attr.addFlashAttribute("success", "Funcionário editado com sucesso.");

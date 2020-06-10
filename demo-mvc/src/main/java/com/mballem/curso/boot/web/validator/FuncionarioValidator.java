@@ -6,6 +6,7 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
 import com.mballem.curso.boot.domain.Funcionario;
+import com.mballem.curso.boot.util.PaginacaoUtil;
 
 
 public class FuncionarioValidator implements Validator {
@@ -16,7 +17,7 @@ public class FuncionarioValidator implements Validator {
 	
 	public boolean supports( Class<?> clazz) {
 		
-		return Funcionario.class.equals( clazz );
+		return Funcionario.class.equals( clazz ) || PaginacaoUtil.class.equals( clazz );
 	}
 	
 	public void validate( Object object, Errors errors ) {

@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.mballem.curso.boot.dao.FuncionarioDao;
 import com.mballem.curso.boot.domain.Funcionario;
+import com.mballem.curso.boot.util.PaginacaoUtil;
 
 @Service
 public class FuncionarioServiceImpl implements IService<Funcionario, Long> {
@@ -59,6 +60,11 @@ public class FuncionarioServiceImpl implements IService<Funcionario, Long> {
 	public List<Funcionario> buscarPorData( LocalDate dataInicial, LocalDate dataFinal ){
 		return dao.buscaPorData(dataInicial, dataFinal);
 	}
-	
+
+	public PaginacaoUtil<Funcionario> buscarPorPagina( int pagina, String direcao){
+		
+		return dao.buscaPaginada(pagina, direcao);
+	}
+
 
 }
