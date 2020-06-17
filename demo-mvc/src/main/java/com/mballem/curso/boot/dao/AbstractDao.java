@@ -5,6 +5,7 @@ import java.lang.reflect.ParameterizedType;
 import java.util.List;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TypedQuery;
@@ -29,18 +30,30 @@ public abstract class AbstractDao< T, K extends Serializable> {
 
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS, timeout = 30)
 	public T findById(K id)  throws Exception {
-		T obj = em.find( clazz, id);
-		
-		return obj;
+		try {
+			T obj = em.find( clazz, id);
+			
+			return obj;
+		}catch(NoResultException nre) { 
+			return null;		
+		}catch (Exception e) {
+			throw e;
+		}
 	}
 
 
 	@SuppressWarnings("unchecked")
 	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS, timeout = 30)
     public List<T> findAll(){
-    	Query objects = em.createQuery("select object(o) from " + clazz.getSimpleName() + " as o order by o.id");
-    	
-		return objects.getResultList();
+    	try {
+			Query objects = em.createQuery("select object(o) from " + clazz.getSimpleName() + " as o order by o.id");
+			
+			return objects.getResultList();
+		}catch(NoResultException nre) { 
+			return null;		
+		}catch (Exception e) {
+			throw e;
+		}
     }
 
 	@Transactional(propagation=Propagation.REQUIRED,readOnly=false) 
@@ -92,13 +105,25 @@ public abstract class AbstractDao< T, K extends Serializable> {
 			query.setParameter( i + 1, params[i]); 
 		}
 		
-		return query.getResultList();
+		try {
+			return query.getResultList();
+		}catch(NoResultException nre) { 
+			return null;		
+		}catch (Exception e) {
+			throw e;
+		}
 	}
 
 	protected List<T> createQuery(String jpql){
-		TypedQuery<T> query = em.createQuery(jpql, clazz );
-		
-		return query.getResultList();
+		try {
+			TypedQuery<T> query = em.createQuery(jpql, clazz );
+			
+			return query.getResultList();
+		}catch(NoResultException nre) { 
+			return null;		
+		}catch (Exception e) {
+			throw e;
+		}
 	}
 
 }

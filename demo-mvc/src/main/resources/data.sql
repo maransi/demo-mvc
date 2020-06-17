@@ -34,3 +34,21 @@ VALUES('Jorge da Silva', 3500.99, 4, 1, '2014-10-01',null, 2, null),
 	('Joana Prado', 3804.00, 4, 5, '2015-02-01', null, 1, null);
 
 
+INSERT INTO area_atividade(descricao)
+VALUES('Financeira'),
+		('Comércio'),
+		('Industrial'),
+		('Pecuária'),
+		('Química'),
+		('Tecnologia da Inf');
+		
+INSERT INTO empresa( cnpj, data_abertura, razao_social, situacao, area_atividade, endereco_id, faturamento_mensal)
+VALUES  ('01800019000185', '2015-02-01', 'PortoCred Financeira', 'A', 1, 1,100000.00),
+		('02879250001302','2010-01-01', 'Empresário Cobrança','A', 2, 2, 250000.00),
+		('01171591000122','1996-01-01', 'Nova Quest Financeira', 'A', 1,1, 180000.00),
+		('05550662000159', '2003-06-03', 'Walar Desenv de Sist IT LTDA', 'A', 6, 4, 1000000.00),
+		('60856820002660', '1985-05-27', 'Brasimet Proc Termico LTDA', 'A', 5, 4, 780000.00),
+		('60856820000373', '1945-06-01', 'Bodycote Brasimet Proc Termico Ltda', 'A', 3, 4, 50000.00);
+		
+ 		
+		

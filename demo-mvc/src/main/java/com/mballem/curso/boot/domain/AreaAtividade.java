@@ -17,6 +17,12 @@ public class AreaAtividade extends AbstractEntity<Long> {
 	@NotBlank
 	private String descricao;
 
+	
+	public AreaAtividade() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
 	public AreaAtividade(String descricao) {
 		super();
 		this.descricao = descricao;
@@ -59,6 +65,7 @@ public class AreaAtividade extends AbstractEntity<Long> {
 			return false;
 		return true;
 	}
+
 	
 	
 }
