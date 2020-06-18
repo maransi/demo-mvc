@@ -26,7 +26,7 @@
 	            <form th:action="${empresa.id == null} ? @{/empresas/salvar} : @{/empresas/editar}" 
 	                  th:object="${empresa}" method="POST">
 	                <div class="form-row">
-	                    <div class="form-group col-md-2">
+	                    <div class="form-group col-md-3">
 	                        <label for="cpfCnpj">CNPJ</label>
 	                        <input 	type="text" 
 	                        		class="form-control  form-control-sm" 
@@ -40,7 +40,7 @@
 								<span th:errors="*{cnpj}"></span>
 	                        </div>
 	                    </div>
-	                    <div class="form-group col-md-5">
+	                    <div class="form-group col-md-4">
 	                        <label for="nome">Razão Social</label>
 	                        <input 	type="text" 
 	                        		class="form-control form-control-sm" 
@@ -154,7 +154,7 @@
 								<span th:errors="*{endereco.cidade}"></span>
 	                        </div>
 	                    </div>
-	                    <div class="form-group col-md-1">
+	                    <div class="form-group col-md-2">
 	                        <label for="uf">UF</label>
 	                        <select id="uf" 
 	                        		class="form-control  form-control-sm" 
@@ -167,7 +167,7 @@
 								<span th:errors="*{endereco.uf}"></span>
 	                        </div>
 	                    </div>
-	                    <div class="form-group col-md-2">
+	                    <div class="form-group col-md-1">
 	                        <label for="cep">CEP</label>
 	                        <input 	type="text" 
 	                        		class="form-control  form-control-sm" 

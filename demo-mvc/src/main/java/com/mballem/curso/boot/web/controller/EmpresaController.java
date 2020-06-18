@@ -9,7 +9,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.InitBinder;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,6 +24,7 @@ import com.mballem.curso.boot.domain.Empresa;
 import com.mballem.curso.boot.domain.UF;
 import com.mballem.curso.boot.service.EmpresaServiceImpl;
 import com.mballem.curso.boot.util.PaginacaoUtil;
+import com.mballem.curso.boot.web.validator.EmpresaValidator;
 
 @Controller
 @RequestMapping("/empresas")
@@ -31,15 +34,19 @@ public class EmpresaController {
 	EmpresaServiceImpl empresaService;
 	
 
+	@Autowired
+	EmpresaValidator empresaValidator;
+	
 	public EmpresaController() {
 		// TODO Auto-generated constructor stub
 	}
-/*
+
 	@InitBinder
 	public void initBinder( WebDataBinder binder ) {
-		binder.addValidators(new EmpresaValidator());
+//		binder.addValidators(new EmpresaValidator());
+		binder.addValidators(empresaValidator);
 	}
-*/
+
 	@GetMapping("/cadastrar")
 	public String cadastrar(Empresa empresa) {
 		return "empresa/cadastro";
