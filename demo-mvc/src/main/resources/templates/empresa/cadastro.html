@@ -27,7 +27,7 @@
 	                  th:object="${empresa}" method="POST">
 	                <div class="form-row">
 	                    <div class="form-group col-md-3">
-	                        <label for="cpfCnpj">CNPJ</label>
+	                        <label for="cpf">CNPJ</label>
 	                        <input 	type="text" 
 	                        		class="form-control  form-control-sm" 
 	                        		id="cnpj" 
@@ -180,7 +180,7 @@
 	                        </div>
 	                    </div>
 	                    <div class="form-group col-md-2">
-	                        <label for="salario">Faturamento Mensal</label>
+	                        <label for="faturamentoMensal">Faturamento Mensal</label>
 	                        <input type="text" class="form-control  form-control-sm" id="faturamentoMensal" data-mask="####.###.##0,00"
 	                               data-mask-reverse="true" 
 	                               th:field="*{faturamentoMensal}"
